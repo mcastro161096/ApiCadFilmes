@@ -25,8 +25,6 @@
     <Folder Include="Controllers\" />
     <Folder Include="Domain\Models\Mapping\" />
     <Folder Include="Domain\Models\IRepository\" />
-    <Folder Include="Domain\Models\IServices\" />
-    <Folder Include="Domain\Services\" />
     <Folder Include="Domain\Models\Validator\" />
     <Folder Include="Domain\Repository\" />
   </ItemGroup>
