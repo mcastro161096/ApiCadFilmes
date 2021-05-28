@@ -1,7 +1,9 @@
+using ApiCadFilmes.Domain.Models.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,11 @@ namespace ApiCadFilmes
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string sqlServer = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContextPool<ApiContext>(options =>
+            {
+                options.UseSqlServer(sqlServer);
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

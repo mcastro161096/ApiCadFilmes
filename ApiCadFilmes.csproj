@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Domain\Models\Mapping\" />
-    <Folder Include="Domain\Models\Context\" />
     <Folder Include="Domain\Models\Validator\" />
     <Folder Include="Domain\Repository\" />
   </ItemGroup>
