@@ -1,6 +1,8 @@
 ﻿using ApiCadFilmes.Domain.Models.Context;
 using ApiCadFilmes.Domain.Models.Entities;
 using ApiCadFilmes.Domain.Models.IRepository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,30 +14,115 @@ namespace ApiCadFilmes.Domain.Repository
     {
         public FilmeRepository(ApiContext context) : base(context) {}
         
-
-        public Task AddAsync(Filme filme)
+        /*Aqui eu uso o tipo de retorno Task porque o método não retorna nada, semelhante a um tipo void
+         e uso o async para que o método possa aguardar o resulatdo das chamadas que estão sendo feitas usando o await.
+        Conforme solicitado nos requisitos técnicos estou usando transaction para garantir a integridade do banco de dados*/
+        public async Task AddAsync(Filme filme)
         {
-            throw new NotImplementedException();
+            IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            {
+                try
+                {
+                    await _context.Filmes.AddAsync(filme);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+
+                    transaction.Rollback();
+                }
+            }
+            
+        }
+        //Já aqui uso o tipo de retorno Task<T> porque preciso retornar o filme que foi requisitado
+        public async Task<Filme> FindByIdAsync(int id)
+        {
+            return await _context.Filmes.FindAsync(id);
         }
 
-        public Task<Filme> FindByIdAsync(int id)
+        public async Task<IEnumerable<Filme>> ListAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Filmes.ToListAsync();
         }
 
-        public Task<IEnumerable<Filme>> ListAsync()
+        
+
+        public async Task<bool> Update(Filme filme)
         {
-            throw new NotImplementedException();
+            IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            {
+                try
+                {
+
+                    _context.Filmes.Update(filme);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                    transaction.Rollback();
+                    return false;
+                }
+            }
         }
 
-        public void Remove(Filme filme)
+        public async Task<bool> Remove(Filme filme)
         {
-            throw new NotImplementedException();
+
+            IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            {
+                try
+                {
+
+                    _context.Filmes.Remove(filme);
+                    await _context.SaveChangesAsync();
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+
+                    transaction.Rollback();
+                    return false;
+                }
+            }
+
+
         }
 
-        public void Update(Filme filme)
+        public async Task<bool> RemoveMany(IEnumerable<Filme> filmes)
         {
-            throw new NotImplementedException();
+            IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            {
+                
+                    try
+                    {
+                        foreach (var filme in filmes)
+                        {
+                            _context.Filmes.Remove(filme);
+                           
+                        }
+                        await _context.SaveChangesAsync();
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+
+                        transaction.Rollback();
+                        return false;
+                    }
+                
+                
+            }
+        }
+
+        public bool FilmeExists(int id)
+        {
+            return _context.Filmes.Any(e => e.Id == id);
         }
     }
 }

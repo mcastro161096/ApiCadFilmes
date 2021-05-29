@@ -1,4 +1,5 @@
 ﻿using ApiCadFilmes.Domain.Models.Entities;
+using ApiCadFilmes.Domain.Models.IRepository;
 using ApiCadFilmes.Domain.Models.IServices;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,43 @@ namespace ApiCadFilmes.Domain.Services
 {
     public class FilmeService : IFilmeService
     {
-        public Task AddAsync(Filme filme)
+        private readonly IFilmeRepository _filmeRepository;
+        public FilmeService(IFilmeRepository filmeRepository)
+        {
+            _filmeRepository = filmeRepository;
+        }
+        public async Task AddAsync(Filme filme)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Filme> FindByIdAsync(int id)
+        public async Task<Filme> FindByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Filme>> ListAsync()
+        public async Task<IEnumerable<Filme>> ListAsync()
         {
             throw new NotImplementedException();
         }
 
-        public void Remove(Filme filme)
+        public async Task<bool> Remove(Filme filme)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(Filme filme)
+        public async Task<bool> Update(Filme filme)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> RemoveMany(IEnumerable<Filme> filmes)
+        {
+            throw new NotImplementedException();
+        }
+        public bool FilmeExists(int id)
+        {
+            return _filmeRepository.FilmeExists(id);
         }
     }
 }

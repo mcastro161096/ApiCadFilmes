@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace ApiCadFilmes.Domain.Models.IRepository
 {
-    interface IFilmeRepository
+    public interface IFilmeRepository
     {
         Task<IEnumerable<Filme>> ListAsync();
         Task AddAsync(Filme filme);
         Task<Filme> FindByIdAsync(int id);
-        void Update(Filme filme);
-        void Remove(Filme filme);
+        Task<bool> Update(Filme filme);
+        Task<bool> Remove(Filme filme);
+        Task<bool> RemoveMany(IEnumerable<Filme> filmes);
+        bool FilmeExists(int id);
     }
 }
