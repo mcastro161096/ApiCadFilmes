@@ -1,4 +1,8 @@
 using ApiCadFilmes.Domain.Models.Context;
+using ApiCadFilmes.Domain.Models.IRepository;
+using ApiCadFilmes.Domain.Models.IServices;
+using ApiCadFilmes.Domain.Repository;
+using ApiCadFilmes.Domain.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +32,7 @@ namespace ApiCadFilmes
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Aqui eu configuro a conexão com o Sql Server
             string sqlServer = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContextPool<ApiContext>(options =>
             {
@@ -39,6 +44,11 @@ namespace ApiCadFilmes
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCadFilmes", Version = "v1" });
             });
+            /*Aqui eu registro os serviços que serão usados na injeção de dependência, 
+            passando o nome da interface e o nome da classe que implementa a interface */
+            services.AddScoped<IFilmeService, FilmeService>();
+            services.AddScoped<IFilmeRepository, FilmeRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
