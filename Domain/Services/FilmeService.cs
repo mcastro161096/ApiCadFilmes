@@ -17,32 +17,32 @@ namespace ApiCadFilmes.Domain.Services
         }
         public async Task AddAsync(Filme filme)
         {
-            throw new NotImplementedException();
+            await _filmeRepository.AddAsync(filme);
         }
 
         public async Task<Filme> FindByIdAsync(int id)
         {
-            throw new NotImplementedException();
+          return await  _filmeRepository.FindByIdAsync(id);
         }
 
         public async Task<IEnumerable<Filme>> ListAsync()
         {
-            throw new NotImplementedException();
+            return await _filmeRepository.ListAsync();
         }
 
         public async Task<bool> Remove(Filme filme)
         {
-            throw new NotImplementedException();
+          return  await _filmeRepository.Remove(filme);
         }
 
         public async Task<bool> Update(Filme filme)
         {
-            throw new NotImplementedException();
+          return await _filmeRepository.Update(filme);
         }
 
         public async Task<bool> RemoveMany(IEnumerable<Filme> filmes)
         {
-            throw new NotImplementedException();
+            return await _filmeRepository.RemoveMany(filmes);
         }
         public bool FilmeExists(int id)
         {

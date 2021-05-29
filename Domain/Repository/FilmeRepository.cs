@@ -12,8 +12,8 @@ namespace ApiCadFilmes.Domain.Repository
 {
     public class FilmeRepository : BaseRepository, IFilmeRepository
     {
-        public FilmeRepository(ApiContext context) : base(context) {}
-        
+        public FilmeRepository(ApiContext context) : base(context) { }
+
         /*Aqui eu uso o tipo de retorno Task porque o método não retorna nada, semelhante a um tipo void
          e uso o async para que o método possa aguardar o resulatdo das chamadas que estão sendo feitas usando o await.
         Conforme solicitado nos requisitos técnicos estou usando transaction para garantir a integridade do banco de dados*/
@@ -33,7 +33,7 @@ namespace ApiCadFilmes.Domain.Repository
                     transaction.Rollback();
                 }
             }
-            
+
         }
         //Já aqui uso o tipo de retorno Task<T> porque preciso retornar o filme que foi requisitado
         public async Task<Filme> FindByIdAsync(int id)
@@ -46,26 +46,33 @@ namespace ApiCadFilmes.Domain.Repository
             return await _context.Filmes.ToListAsync();
         }
 
-        
+
 
         public async Task<bool> Update(Filme filme)
         {
             IDbContextTransaction transaction = _context.Database.BeginTransaction();
             {
-                try
+                if (FilmeExists(filme.Id))
                 {
+                    try
+                    {
 
-                    _context.Filmes.Update(filme);
-                    await _context.SaveChangesAsync();
-                    transaction.Commit();
-                    return true;
+                        _context.Filmes.Update(filme);
+                        await _context.SaveChangesAsync();
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
                 }
-                catch (Exception)
+                else
                 {
-
-                    transaction.Rollback();
                     return false;
                 }
+
             }
         }
 
@@ -74,36 +81,43 @@ namespace ApiCadFilmes.Domain.Repository
 
             IDbContextTransaction transaction = _context.Database.BeginTransaction();
             {
-                try
+                if (FilmeExists(filme.Id))
                 {
+                    try
+                    {
 
-                    _context.Filmes.Remove(filme);
-                    await _context.SaveChangesAsync();
-                    transaction.Commit();
-                    return true;
+                        _context.Filmes.Remove(filme);
+                        await _context.SaveChangesAsync();
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+
+                        transaction.Rollback();
+                        return false;
+                    }
+
                 }
-                catch (Exception)
+                else
                 {
-
-                    transaction.Rollback();
                     return false;
                 }
+
+
             }
-
-
         }
-
-        public async Task<bool> RemoveMany(IEnumerable<Filme> filmes)
-        {
-            IDbContextTransaction transaction = _context.Database.BeginTransaction();
+            public async Task<bool> RemoveMany(IEnumerable<Filme> filmes)
             {
-                
+                IDbContextTransaction transaction = _context.Database.BeginTransaction();
+                {
+
                     try
                     {
                         foreach (var filme in filmes)
                         {
                             _context.Filmes.Remove(filme);
-                           
+
                         }
                         await _context.SaveChangesAsync();
                         transaction.Commit();
@@ -115,14 +129,14 @@ namespace ApiCadFilmes.Domain.Repository
                         transaction.Rollback();
                         return false;
                     }
-                
-                
+
+
+                }
+            }
+
+            public bool FilmeExists(int id)
+            {
+                return _context.Filmes.Any(e => e.Id == id);
             }
         }
-
-        public bool FilmeExists(int id)
-        {
-            return _context.Filmes.Any(e => e.Id == id);
-        }
     }
-}
