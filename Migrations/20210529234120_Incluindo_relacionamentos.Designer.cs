@@ -4,14 +4,16 @@ using ApiCadFilmes.Domain.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiCadFilmes.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    partial class ApiContextModelSnapshot : ModelSnapshot
+    [Migration("20210529234120_Incluindo_relacionamentos")]
+    partial class Incluindo_relacionamentos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +37,9 @@ namespace ApiCadFilmes.Migrations
                     b.Property<int?>("GeneroId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("LocacaoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -43,6 +48,8 @@ namespace ApiCadFilmes.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GeneroId");
+
+                    b.HasIndex("LocacaoId");
 
                     b.ToTable("Filmes");
                 });
@@ -78,9 +85,7 @@ namespace ApiCadFilmes.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CpfCliente")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataLocacao")
                         .HasColumnType("datetime2");
@@ -90,46 +95,25 @@ namespace ApiCadFilmes.Migrations
                     b.ToTable("Locacoes");
                 });
 
-            modelBuilder.Entity("FilmeLocacao", b =>
-                {
-                    b.Property<int>("FilmesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LocacoesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilmesId", "LocacoesId");
-
-                    b.HasIndex("LocacoesId");
-
-                    b.ToTable("FilmeLocacao");
-                });
-
             modelBuilder.Entity("ApiCadFilmes.Domain.Models.Entities.Filme", b =>
                 {
                     b.HasOne("ApiCadFilmes.Domain.Models.Entities.Genero", "Genero")
                         .WithMany("Filmes")
                         .HasForeignKey("GeneroId");
 
+                    b.HasOne("ApiCadFilmes.Domain.Models.Entities.Locacao", null)
+                        .WithMany("Filmes")
+                        .HasForeignKey("LocacaoId");
+
                     b.Navigation("Genero");
                 });
 
-            modelBuilder.Entity("FilmeLocacao", b =>
+            modelBuilder.Entity("ApiCadFilmes.Domain.Models.Entities.Genero", b =>
                 {
-                    b.HasOne("ApiCadFilmes.Domain.Models.Entities.Filme", null)
-                        .WithMany()
-                        .HasForeignKey("FilmesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApiCadFilmes.Domain.Models.Entities.Locacao", null)
-                        .WithMany()
-                        .HasForeignKey("LocacoesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Filmes");
                 });
 
-            modelBuilder.Entity("ApiCadFilmes.Domain.Models.Entities.Genero", b =>
+            modelBuilder.Entity("ApiCadFilmes.Domain.Models.Entities.Locacao", b =>
                 {
                     b.Navigation("Filmes");
                 });
