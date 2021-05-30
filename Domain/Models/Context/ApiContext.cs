@@ -27,7 +27,7 @@ namespace ApiCadFilmes.Domain.Models.Context
                 f.Property(x => x.Ativo).IsRequired();
                 f.Property(x => x.DataCriacao).IsRequired();
                 f.HasOne(x => x.Genero).WithMany(x => x.Filmes);
-                //f.Property(x => x.Locacoes).IsRequired();
+               
                 
             });
 
@@ -35,12 +35,12 @@ namespace ApiCadFilmes.Domain.Models.Context
             {
                 g.ToTable<Genero>("Generos");
                 g.Property(x => x.Nome).IsRequired().HasMaxLength(100);
-               // g.Property(x => x.Id).fore
+               
             });
 
             modelBuilder.Entity<Locacao>(lo =>
             {
-                //lo.Property(l => l.Filmes).IsRequired();
+                
                 lo.Property(l => l.CpfCliente).IsRequired().HasMaxLength(14);
                 lo.Property(l => l.DataLocacao).IsRequired();
             });

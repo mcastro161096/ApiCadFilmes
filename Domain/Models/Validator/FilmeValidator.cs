@@ -13,7 +13,9 @@ namespace ApiCadFilmes.Domain.Models.Validator
       
         public FilmeValidator()
         {
-            RuleFor(x => x.Nome).NotNull().WithMessage("Nome não pode ser nulo").NotEmpty().WithMessage("Nome não pode ser vazio");
+            RuleFor(x => x.Nome).NotNull().WithMessage("Nome não pode ser nulo")
+                .NotEmpty().WithMessage("Nome não pode ser vazio")
+                .MaximumLength(200).WithMessage("Tamanho maximo do nome é {MaxLength}");
             RuleFor(x => x.GeneroId).NotNull().WithMessage("O id é obrigatório").NotEmpty().WithMessage("O id não pode ser vazio");   
         }
     }

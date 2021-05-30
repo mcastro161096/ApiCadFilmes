@@ -54,7 +54,8 @@ namespace ApiCadFilmes
             services.AddScoped<IFilmeRepository, FilmeRepository>();
             services.AddControllers().AddFluentValidation();
             services.AddTransient<IValidator<Filme>, FilmeValidator>();
-            //services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddTransient<IValidator<Genero>, GeneroValidator>();
+            
 
         }
 
