@@ -15,9 +15,9 @@ namespace ApiCadFilmes.Domain.Services
         {
             _filmeRepository = filmeRepository;
         }
-        public async Task AddAsync(Filme filme)
+        public async Task<bool> AddAsync(Filme filme)
         {
-            await _filmeRepository.AddAsync(filme);
+          return  await _filmeRepository.AddAsync(filme);
         }
 
         public async Task<Filme> FindByIdAsync(int id)

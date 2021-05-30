@@ -9,7 +9,7 @@ namespace ApiCadFilmes.Domain.Models.IRepository
     public interface IFilmeRepository
     {
         Task<IEnumerable<Filme>> ListAsync();
-        Task AddAsync(Filme filme);
+        Task<bool> AddAsync(Filme filme);
         Task<Filme> FindByIdAsync(int id);
         Task<bool> Update(Filme filme);
         Task<bool> Remove(Filme filme);

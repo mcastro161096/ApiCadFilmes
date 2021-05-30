@@ -1,5 +1,4 @@
 ﻿using ApiCadFilmes.Domain.Models.Entities;
-using ApiCadFilmes.Domain.Models.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,12 +28,14 @@ namespace ApiCadFilmes.Domain.Models.Context
                 f.Property(x => x.DataCriacao).IsRequired();
                 f.HasOne(x => x.Genero).WithMany(x => x.Filmes);
                 //f.Property(x => x.Locacoes).IsRequired();
+                
             });
 
             modelBuilder.Entity<Genero>( g =>
             {
                 g.ToTable<Genero>("Generos");
                 g.Property(x => x.Nome).IsRequired().HasMaxLength(100);
+               // g.Property(x => x.Id).fore
             });
 
             modelBuilder.Entity<Locacao>(lo =>

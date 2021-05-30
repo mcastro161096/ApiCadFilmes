@@ -1,8 +1,12 @@
 using ApiCadFilmes.Domain.Models.Context;
+using ApiCadFilmes.Domain.Models.Entities;
 using ApiCadFilmes.Domain.Models.IRepository;
 using ApiCadFilmes.Domain.Models.IServices;
+using ApiCadFilmes.Domain.Models.Validator;
 using ApiCadFilmes.Domain.Repository;
 using ApiCadFilmes.Domain.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -48,6 +52,9 @@ namespace ApiCadFilmes
             passando o nome da interface e o nome da classe que implementa a interface */
             services.AddScoped<IFilmeService, FilmeService>();
             services.AddScoped<IFilmeRepository, FilmeRepository>();
+            services.AddControllers().AddFluentValidation();
+            services.AddTransient<IValidator<Filme>, FilmeValidator>();
+            //services.AddControllers().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
 
         }
 

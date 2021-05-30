@@ -9,7 +9,7 @@ namespace ApiCadFilmes.Domain.Models.IServices
     public interface IFilmeService
     {
         Task<IEnumerable<Filme>> ListAsync();
-        Task AddAsync(Filme filme);
+        Task<bool> AddAsync(Filme filme);
         Task<Filme> FindByIdAsync(int id);
         Task<bool> Update(Filme filme);
         Task<bool> Remove(Filme filme);

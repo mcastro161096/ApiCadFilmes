@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Text.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace ApiCadFilmes.Domain.Models.Entities
         public DateTime DataCriacao { get; set; }
 
         public bool Ativo { get; set; }
-
+        [JsonIgnore]
         public IList<Filme> Filmes { get; set; } = new List<Filme>();
     }
 }

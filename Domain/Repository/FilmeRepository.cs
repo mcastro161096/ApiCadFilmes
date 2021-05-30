@@ -17,7 +17,7 @@ namespace ApiCadFilmes.Domain.Repository
         /*Aqui eu uso o tipo de retorno Task porque o método não retorna nada, semelhante a um tipo void
          e uso o async para que o método possa aguardar o resulatdo das chamadas que estão sendo feitas usando o await.
         Conforme solicitado nos requisitos técnicos estou usando transaction para garantir a integridade do banco de dados*/
-        public async Task AddAsync(Filme filme)
+        public async Task<bool> AddAsync(Filme filme)
         {
             IDbContextTransaction transaction = _context.Database.BeginTransaction();
             {
@@ -26,11 +26,13 @@ namespace ApiCadFilmes.Domain.Repository
                     await _context.Filmes.AddAsync(filme);
                     await _context.SaveChangesAsync();
                     transaction.Commit();
+                    return true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
+                    
                     transaction.Rollback();
+                    return false;
                 }
             }
 

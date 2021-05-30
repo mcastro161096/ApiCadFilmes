@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ApiCadFilmes.Domain.Models.Context;
 using ApiCadFilmes.Domain.Models.Entities;
 using ApiCadFilmes.Domain.Models.IServices;
+using ApiCadFilmes.Domain.Models.Validator;
+using FluentValidation.Results;
 
 namespace ApiCadFilmes.Controllers
 {
@@ -16,10 +18,13 @@ namespace ApiCadFilmes.Controllers
     public class FilmesController : ControllerBase
     {
         private readonly IFilmeService _filmeService;
+        public readonly FilmeValidator _validationRules = new FilmeValidator();
+        public ValidationResult _result = new ValidationResult();
 
         public FilmesController(IFilmeService filmeService)
         {
             _filmeService = filmeService;
+           
         }
 
         // GET: api/Filmes
@@ -50,9 +55,26 @@ namespace ApiCadFilmes.Controllers
         [HttpPost]
         public async Task<ActionResult<Filme>> PostFilme(Filme filme)
         {
-            await _filmeService.AddAsync(filme);
+            _result = _validationRules.Validate(filme);
+            if (_result.IsValid)
+            {
+                
 
-            return CreatedAtAction("GetFilme", new { id = filme.Id }, filme);
+                if (await _filmeService.AddAsync(filme))
+                {
+                    return CreatedAtAction("GetFilme", new { id = filme.Id }, filme);
+                }
+                else
+                {
+                    return NotFound("O id da categoria informada não existe, o filme não pode ser salvo.");
+                }
+                
+
+                
+            }
+            return BadRequest(_result.Errors);
+
+            
         }
 
         // PUT: api/Filmes/5
