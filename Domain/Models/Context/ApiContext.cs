@@ -1,4 +1,5 @@
 ﻿using ApiCadFilmes.Domain.Models.Entities;
+using ApiCadFilmes.Domain.Models.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,29 @@ namespace ApiCadFilmes.Domain.Models.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Filme>()
-                .HasData(
-                new Filme { Id = 1, Nome ="Filme teste", Genero = "Ação", Ativo = 1, DataCriacao = DateTime.Now});
+            modelBuilder.Entity<Filme>(f =>
+            {
+                f.ToTable("Filmes");
+                f.Property(x => x.Nome).IsRequired().HasMaxLength(200);
+                f.Property(x => x.Ativo).IsRequired();
+                f.Property(x => x.DataCriacao).IsRequired();
+                f.HasOne(x => x.Genero).WithMany(x => x.Filmes);
+                //f.Property(x => x.Locacoes).IsRequired();
+            });
 
-            modelBuilder.Entity<Genero>()
-                .HasData(
-                new Genero { Id = 1, Nome = "teste", Ativo = 1, DataCriacao = DateTime.Now });
+            modelBuilder.Entity<Genero>( g =>
+            {
+                g.ToTable<Genero>("Generos");
+                g.Property(x => x.Nome).IsRequired().HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<Locacao>(lo =>
+            {
+                //lo.Property(l => l.Filmes).IsRequired();
+                lo.Property(l => l.CpfCliente).IsRequired().HasMaxLength(14);
+                lo.Property(l => l.DataLocacao).IsRequired();
+            });
+            
             
         }
 
