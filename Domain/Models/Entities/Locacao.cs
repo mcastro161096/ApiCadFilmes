@@ -9,10 +9,10 @@ namespace ApiCadFilmes.Domain.Models.Entities
     {
         public int Id { get; set; }
 
-        public List<Filme> Filmes { get; set; }
-
         public string CpfCliente { get; set; }
 
         public DateTime DataLocacao { get; set; }
+
+        public ICollection<Filme> Filmes { get; set; }
     }
 }

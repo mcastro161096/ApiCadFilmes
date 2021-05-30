@@ -13,6 +13,8 @@ namespace ApiCadFilmes.Domain.Models.Entities
 
         public DateTime DataCriacao { get; set; }
 
-        public int Ativo { get; set; }
+        public bool Ativo { get; set; }
+
+        public IList<Filme> Filmes { get; set; } = new List<Filme>();
     }
 }

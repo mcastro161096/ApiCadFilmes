@@ -13,8 +13,10 @@ namespace ApiCadFilmes.Domain.Models.Entities
 
         public DateTime DataCriacao { get; set; }
 
-        public int Ativo { get; set; }
+        public bool Ativo { get; set; }
 
-        public string Genero { get; set; }
+        public Genero Genero { get; set; }
+
+        public ICollection<Locacao> Locacoes { get; set; }
     }
 }
