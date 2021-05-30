@@ -13,7 +13,7 @@ using FluentValidation.Results;
 
 namespace ApiCadFilmes.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/filmes")]
     [ApiController]
     public class FilmesController : ControllerBase
     {
