@@ -48,6 +48,7 @@ namespace ApiCadFilmes
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCadFilmes", Version = "v1" });
             });
+            //services.AddSwaggerGen();
             /*Aqui eu registro os serviços que serão usados na injeção de dependência, 
             passando o nome da interface e o nome da classe que implementa a interface */
             services.AddScoped<IFilmeService, FilmeService>();
