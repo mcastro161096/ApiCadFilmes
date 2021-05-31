@@ -13,7 +13,7 @@ Caso você clone o projeto e queira rodar ele localmente, basta configurar a con
     "DefaultConnection": "Password=SUASENHA;Persist Security Info=True;User ID=USUARIODOSEUBANCODEDADOS;Initial Catalog=DbApiCadFilmes;Data Source=NOMEDOSEUSERVIDOR"}.  
     É necessário que se tenha um servidor sql instalado na sua máquina, não é necessário criar o database pois na primeira execução  
   da API o EntityFramework irá aplicar as migrations e criar o banco de dados sozinho.  
-  A API conta com a interface do Swagger que possibilita o teste de todos os endpoints da api, mas também pode ser testada via outras ferramentas coo PostMan.  
+  A API conta com a interface do Swagger que possibilita o teste de todos os endpoints da api, mas também pode ser testada via outras ferramentas como PostMan.  
   A Api também está publicada no Azure Web sites, para acessá-la é necessário fazer as requisições nas seguintes Url's:  
 Filmes: https://apicadfilmesapi1.azure-api.net/api/filmes  
 Generos: https://apicadfilmesapi1.azure-api.net/api/generos  
